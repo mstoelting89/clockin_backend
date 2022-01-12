@@ -3,8 +3,13 @@ package com.clockin.clockin_backend.registration;
 import com.clockin.clockin_backend.appuser.AppUser;
 import com.clockin.clockin_backend.appuser.AppUserRole;
 import com.clockin.clockin_backend.appuser.AppUserService;
+import com.clockin.clockin_backend.registration.token.ConfirmationToken;
+import com.clockin.clockin_backend.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -12,6 +17,7 @@ public class RegistrationService {
 
     private final AppUserService appUserService;
     private final EmailValidator emailValidator;
+    private final ConfirmationTokenService confirmationTokenService;
 
     public String register(RegistrationRequest request) {
 
@@ -28,5 +34,30 @@ public class RegistrationService {
                 request.getPassword(),
                 AppUserRole.USER
         ));
+    }
+
+    @Transactional
+    public String confirmToken(String token) {
+        // check if provided token is saved
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .getToken(token)
+                .orElseThrow(() -> new IllegalStateException("token not found"));
+
+        // check if the confirmed at date already inside of the table
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new IllegalStateException("Email already confirmed");
+        }
+
+        // check if token is expired
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("token expired");
+        }
+
+        confirmationTokenService.setConfirmedAt(token);
+        appUserService.enableAppUser(confirmationToken.getAppUser().getEmail());
+
+        return "confirmed";
+
     }
 }
