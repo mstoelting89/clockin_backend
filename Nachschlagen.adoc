@@ -4,3 +4,4 @@
 . SequenceGenerator
 . Transactional
 . Optional
+. JoinColumn
