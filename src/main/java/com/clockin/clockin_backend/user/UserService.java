@@ -27,10 +27,6 @@ public class UserService implements UserDetailsService {
     }
 
     public String signUpUser(User user) {
-        /*
-        - create token ( -> create object token + save token in table)
-        - return token
-         */
 
         // check if user exists
         boolean userExists = userRepository.findByEmail(user.getEmail()).isPresent();
