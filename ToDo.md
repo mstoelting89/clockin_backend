@@ -19,7 +19,7 @@
    2. RegistrationDto (x)
    3. RegistrationController (x)
       1. confirm token endpoint
-4. Token / Email package
+4. Token
    1. Create Token Domain (x)
       1. id
       2. token (string)
@@ -31,4 +31,9 @@
       1. get Token (x)
       2. set ConfirmedAt (x)
       3. save Token (x)
-   4. Set enabled in User Table
+5. Email
+   1. Send Email at registration
+   2. write email text
+   3. prepare token endpoint
+   4. send mail
+   5. Set enabled in User Table

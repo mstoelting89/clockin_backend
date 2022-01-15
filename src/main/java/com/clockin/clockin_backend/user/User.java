@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
+@Table(name = "user_entries")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,9 +26,7 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-
-    @OneToOne
-    private UserRole user_role;
+    private String user_role;
     private Boolean enabled;
     private Boolean locked;
 
