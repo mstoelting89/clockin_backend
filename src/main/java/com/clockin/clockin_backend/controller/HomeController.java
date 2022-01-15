@@ -11,4 +11,9 @@ public class HomeController {
         return "Hello World";
     }
 
+    @RequestMapping({"/foo"})
+    public String bar() {
+        return "Bar";
+    }
+
 }
