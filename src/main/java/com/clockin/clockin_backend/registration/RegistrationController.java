@@ -14,4 +14,9 @@ public class RegistrationController {
     public String register(@RequestBody RegistrationDto registrationDto) {
         return registrationService.register(registrationDto);
     }
+
+    @GetMapping(path = "confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return registrationService.confirmToken(token);
+    }
 }

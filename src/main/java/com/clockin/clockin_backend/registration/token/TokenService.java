@@ -3,6 +3,7 @@ package com.clockin.clockin_backend.registration.token;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -22,4 +23,7 @@ public class TokenService {
     }
 
     // set confirmedAt
+    public int setConfirmedAt(String token, LocalDateTime confirmedAt) {
+        return tokenRepository.updateConfirmedAt(token, confirmedAt);
+    }
 }

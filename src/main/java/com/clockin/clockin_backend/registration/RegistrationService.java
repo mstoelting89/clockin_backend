@@ -1,10 +1,16 @@
 package com.clockin.clockin_backend.registration;
 
 import com.clockin.clockin_backend.registration.email.EmailSender;
+import com.clockin.clockin_backend.registration.token.Token;
+import com.clockin.clockin_backend.registration.token.TokenRepository;
+import com.clockin.clockin_backend.registration.token.TokenService;
 import com.clockin.clockin_backend.user.User;
 import com.clockin.clockin_backend.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -13,6 +19,7 @@ public class RegistrationService {
     private final RegistrationValidateEmail registrationValidateEmail;
     private final UserService userService;
     private final EmailSender emailSender;
+    private final TokenService tokenService;
 
     public String register(RegistrationDto registrationDto){
         // verify email
@@ -37,6 +44,29 @@ public class RegistrationService {
         emailSender.send(registrationDto.getEmail(), buildEmail(registrationDto.getFirstName(), link));
 
         return token;
+    }
+
+    public String confirmToken(String tokenFromMail) {
+        // check if token is valid
+        Token tokenFromTable = tokenService.getToken(tokenFromMail).orElseThrow(() -> new IllegalStateException("Token not found"));
+
+        // check if email already confirmed
+        if (tokenFromTable.getConfirmedAt() != null) {
+            throw new IllegalStateException("The Email is already confirmed");
+        }
+
+        // check if token is expired
+        if (tokenFromTable.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Token is expired");
+        }
+
+        // set confirmedAt
+        tokenService.setConfirmedAt(tokenFromMail, LocalDateTime.now());
+
+        // set User enabled
+        userService.enableUser(tokenFromTable.getUser().getEmail());
+
+        return "confirmed";
     }
 
     private String buildEmail(String name, String link) {
