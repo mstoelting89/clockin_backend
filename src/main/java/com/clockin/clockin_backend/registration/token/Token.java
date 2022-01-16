@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 @Setter
 public class Token {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
     private Long id;
     @Column(nullable = false)
     private String token;
