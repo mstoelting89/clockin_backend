@@ -5,6 +5,8 @@ import com.clockin.clockin_backend.registration.token.Token;
 import com.clockin.clockin_backend.registration.token.TokenRepository;
 import com.clockin.clockin_backend.registration.token.TokenService;
 import com.clockin.clockin_backend.user.User;
+import com.clockin.clockin_backend.user.UserRole;
+import com.clockin.clockin_backend.user.UserRoleRepository;
 import com.clockin.clockin_backend.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class RegistrationService {
     private final UserService userService;
     private final EmailSender emailSender;
     private final TokenService tokenService;
+    private final UserRoleRepository userRoleRepository;
 
     public String register(RegistrationDto registrationDto){
         // verify email
@@ -34,7 +37,8 @@ public class RegistrationService {
                         registrationDto.getFirstName(),
                         registrationDto.getLastName(),
                         registrationDto.getEmail(),
-                        registrationDto.getPassword()
+                        registrationDto.getPassword(),
+                        userRoleRepository.findUserRoleByRole("USER")
                 )
         );
 

@@ -27,15 +27,18 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-    private String user_role;
+
+    @ManyToOne
+    private UserRole userRole;
     private Boolean enabled;
     private Boolean locked;
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password, UserRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.userRole = userRole;
     }
 
     @Override
