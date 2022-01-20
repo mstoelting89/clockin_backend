@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 public class RegistrationValidateEmail {
 
     public boolean validate(String email) {
+
         String regex = "^[a-zA-Z0-9._-]*@[a-zA-Z0-9_-]*.[a-z]*";
         return email.matches(regex);
     }
