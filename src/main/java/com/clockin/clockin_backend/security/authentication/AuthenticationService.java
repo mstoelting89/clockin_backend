@@ -1,7 +1,7 @@
 package com.clockin.clockin_backend.security.authentication;
 
-import com.clockin.clockin_backend.security.jwt.JwtTokenResponse;
-import com.clockin.clockin_backend.security.jwt.JwtTokenService;
+import com.clockin.clockin_backend.security.jwt.token.JwtTokenResponse;
+import com.clockin.clockin_backend.security.jwt.token.JwtTokenService;
 import com.clockin.clockin_backend.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

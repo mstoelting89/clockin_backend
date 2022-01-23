@@ -1,0 +1,23 @@
+package com.clockin.clockin_backend.security.jwt.authentication;
+
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Serializable;
+
+/**
+ * returns UNAUTHORIZED if credentials not correct
+ */
+@Component
+public class JwtAuthenticationEntrypoint implements AuthenticationEntryPoint, Serializable {
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+    }
+}

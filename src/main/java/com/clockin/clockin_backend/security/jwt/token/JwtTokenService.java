@@ -1,4 +1,4 @@
-package com.clockin.clockin_backend.security.jwt;
+package com.clockin.clockin_backend.security.jwt.token;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

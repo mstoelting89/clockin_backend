@@ -1,8 +1,12 @@
 package com.clockin.clockin_backend.security;
 
+import com.clockin.clockin_backend.security.jwt.authentication.JwtAuthenticationEntrypoint;
+import com.clockin.clockin_backend.security.jwt.authentication.JwtAuthenticationProvider;
+import com.clockin.clockin_backend.security.jwt.authentication.JwtAuthenticationTokenFilter;
 import com.clockin.clockin_backend.user.UserRepository;
 import com.clockin.clockin_backend.user.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,42 +14,44 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Configuration
-@AllArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private JwtAuthenticationEntrypoint unauthorizedHandler;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/api/v1/registration/**")
-                    .permitAll()
-                    .antMatchers("/secret")
-                    .permitAll()
-                    .antMatchers("/login")
-                    .permitAll()
-                .anyRequest()
-                .authenticated().and()
-                .formLogin();
-    }
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
+    @Autowired
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) {
+        authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(userService);
-        return provider;
+    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
+        return new JwtAuthenticationTokenFilter();
+    }
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                    .antMatchers("/api/v1/registration/**")
+                    .permitAll()
+                .anyRequest().authenticated();
+
+        httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.headers().cacheControl();
     }
 }

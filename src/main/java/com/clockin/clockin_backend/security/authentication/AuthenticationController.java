@@ -1,6 +1,5 @@
 package com.clockin.clockin_backend.security.authentication;
 
-import com.clockin.clockin_backend.security.jwt.JwtTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +14,7 @@ public class AuthenticationController {
 
     private AuthenticationService authenticationService;
 
-    /*
-    @RequestMapping({"/secret"})
-    public String getSecret() {
-        //return new ResponseEntity<>(jwtTokenService.getSecret(), HttpStatus.OK);
-        return jwtTokenService.getSecret();
-    } */
-
-    @PostMapping("/secret")
+    @PostMapping("/api/v1/login")
     public ResponseEntity createCustomer(@RequestBody AuthenticationRequest authenticationRequest) {
         return new ResponseEntity(authenticationService.generateJwtToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()), HttpStatus.OK);
     }

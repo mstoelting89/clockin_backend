@@ -1,4 +1,4 @@
-package com.clockin.clockin_backend.security.jwt;
+package com.clockin.clockin_backend.security.jwt.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
