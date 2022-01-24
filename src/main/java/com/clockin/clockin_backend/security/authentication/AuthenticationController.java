@@ -9,6 +9,7 @@ import javax.persistence.EntityNotFoundException;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 @RequestMapping
 public class AuthenticationController {
 
