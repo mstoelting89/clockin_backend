@@ -2,18 +2,13 @@ package com.clockin.clockin_backend.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
+@CrossOrigin
 public class HomeController {
 
-    @RequestMapping({"/hello"})
-    public String hello() {
-        return "Hello World";
-    }
-
-    @RequestMapping({"/foo"})
-    public String bar() {
-        return "Bar";
+    @PostMapping(path = "/api/v1/testendpoint")
+    public String getData() {
+        return "Data are coming through";
     }
 
 }
