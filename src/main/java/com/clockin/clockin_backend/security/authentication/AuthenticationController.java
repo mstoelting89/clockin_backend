@@ -10,12 +10,12 @@ import javax.persistence.EntityNotFoundException;
 @RestController
 @AllArgsConstructor
 @CrossOrigin
-@RequestMapping
+@RequestMapping(path = "/api/v1/login")
 public class AuthenticationController {
 
     private AuthenticationService authenticationService;
 
-    @PostMapping("/api/v1/login")
+    @PostMapping
     public ResponseEntity createCustomer(@RequestBody AuthenticationRequest authenticationRequest) {
         return new ResponseEntity(authenticationService.generateJwtToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()), HttpStatus.OK);
     }
