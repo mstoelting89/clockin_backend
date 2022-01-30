@@ -13,7 +13,7 @@ public class TimeTrackingController {
     private TimeTrackingService timeTrackingService;
 
     @PostMapping(path = "/api/v1/timetrack/start")
-    public ResponseEntity enterTimeTrackingStart(@RequestBody TimeTrackingRequest timeTrackingRequest) {
-        return new ResponseEntity(timeTrackingService.saveTimeTracking(timeTrackingRequest), HttpStatus.OK);
+    public ResponseEntity enterTimeTrackingStart(@RequestBody TimeTrackingDto timeTrackingDto) {
+        return new ResponseEntity(timeTrackingService.saveTimeTracking(timeTrackingDto), HttpStatus.OK);
     }
 }

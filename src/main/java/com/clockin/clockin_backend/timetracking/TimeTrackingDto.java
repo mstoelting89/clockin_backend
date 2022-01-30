@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TimeTrackingRequest {
+public class TimeTrackingDto {
 
     private String token;
     private LocalDateTime startTime;

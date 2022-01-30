@@ -16,11 +16,11 @@ public class TimeTrackingService {
     private JwtAuthenticationService jwtAuthenticationService;
     private UserService userService;
 
-    public TimeTracking saveTimeTracking(TimeTrackingRequest timeTrackingRequest) {
+    public TimeTracking saveTimeTracking(TimeTrackingDto timeTrackingDto) {
 
-        String email = jwtAuthenticationService.getEmailFromToken(timeTrackingRequest.getToken());
+        String email = jwtAuthenticationService.getEmailFromToken(timeTrackingDto.getToken());
         User user = userService.loadUserByMail(email);
 
-        return timeTrackingRepository.save(new TimeTracking(user, LocalDateTime.now(), LocalDateTime.now()));
+        return timeTrackingRepository.save(new TimeTracking(user, LocalDateTime.now(), null));
     }
 }

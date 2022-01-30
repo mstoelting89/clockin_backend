@@ -16,8 +16,8 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity createCustomer(@RequestBody AuthenticationRequest authenticationRequest) {
-        return new ResponseEntity(authenticationService.generateJwtToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()), HttpStatus.OK);
+    public ResponseEntity createCustomer(@RequestBody AuthenticationDto authenticationDto) {
+        return new ResponseEntity(authenticationService.generateJwtToken(authenticationDto.getEmail(), authenticationDto.getPassword()), HttpStatus.OK);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
