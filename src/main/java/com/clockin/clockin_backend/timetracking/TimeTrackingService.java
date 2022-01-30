@@ -16,11 +16,21 @@ public class TimeTrackingService {
     private JwtAuthenticationService jwtAuthenticationService;
     private UserService userService;
 
-    public TimeTracking saveTimeTracking(String token) {
+    public TimeTracking saveTimeTrackingStart(String token) {
+
+        //TODO: Check before if there is an open timetracking without an end
 
         String email = jwtAuthenticationService.getEmailFromToken(token);
         User user = userService.loadUserByMail(email);
 
         return timeTrackingRepository.save(new TimeTracking(user, LocalDateTime.now(), null));
+    }
+
+
+    public int saveTimeTrackingEnd(String token) {
+        String email = jwtAuthenticationService.getEmailFromToken(token);
+        User user = userService.loadUserByMail(email);
+
+        return timeTrackingRepository.updateTimeTrackingEnd(LocalDateTime.now(), user);
     }
 }

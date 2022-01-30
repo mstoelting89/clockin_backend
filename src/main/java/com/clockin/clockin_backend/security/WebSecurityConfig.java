@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .antMatchers("/api/v1/login/**")
                     .permitAll()
-                    .antMatchers("/api/v1/timetrack/start")
+                    .antMatchers("/api/v1/timetrack/**")
                     .permitAll()
                 .anyRequest().authenticated();
 

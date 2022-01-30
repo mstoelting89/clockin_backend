@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
@@ -48,5 +49,17 @@ public class JwtAuthenticationService {
 
     public Optional<Boolean> validateToken(String token) {
         return isTokenNotExpired(token) ? Optional.of(Boolean.TRUE) : Optional.empty();
+    }
+
+    public String extractTokenFromRequest(HttpServletRequest request) {
+
+        final String tokenString = request.getHeader("Authorization");
+
+        if (tokenString != null && tokenString.startsWith("Bearer ")) {
+            return tokenString.substring(7);
+        } else {
+            return null;
+        }
+
     }
 }
