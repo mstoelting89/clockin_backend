@@ -30,3 +30,13 @@ CREATE TABLE IF NOT EXISTS `token` (
                          CONSTRAINT `FKqgpgadq95gutkosfj0aj7po3b` FOREIGN KEY (`user_id`) REFERENCES `user_entries` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS `time_tracking` (
+                                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                 `end` datetime NOT NULL,
+                                 `start` datetime,
+                                 `user_id` bigint(20),
+                                 PRIMARY KEY (`id`),
+                                 KEY `FKkgt6ycxrjdvnod9hjcyaom9a7` (`user_id`),
+                                 CONSTRAINT `FKkgt6ycxrjdvnod9hjcyaom9a7` FOREIGN KEY (`user_id`) REFERENCES `user_entries` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+
