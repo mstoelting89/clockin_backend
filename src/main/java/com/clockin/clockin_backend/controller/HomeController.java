@@ -11,4 +11,6 @@ public class HomeController {
         return "Data are coming through";
     }
 
+    @PostMapping(path = "/api/v1/testGet")
+    public String getGetData() { return "Data coming through get"; }
 }

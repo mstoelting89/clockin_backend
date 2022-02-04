@@ -16,7 +16,7 @@ public class TimeTrackingController {
     private TimeTrackingService timeTrackingService;
     private JwtAuthenticationService jwtAuthenticationService;
 
-    @PostMapping(path = "/api/v1/timetrack/start")
+    @GetMapping(path = "/api/v1/timetrack/start")
     public ResponseEntity enterTimeTrackingStart(HttpServletRequest request) {
 
         final String token = jwtAuthenticationService.extractTokenFromRequest(request);
@@ -31,7 +31,7 @@ public class TimeTrackingController {
     }
 
 
-    @PostMapping(path = "/api/v1/timetrack/end")
+    @GetMapping(path = "/api/v1/timetrack/end")
     public ResponseEntity enterTimeTrackingEnd(HttpServletRequest request) {
 
         final String token = jwtAuthenticationService.extractTokenFromRequest(request);
