@@ -67,8 +67,9 @@ public class RegistrationService {
         // set confirmedAt
         tokenService.setConfirmedAt(tokenFromMail, LocalDateTime.now());
 
-        // set User enabled
+        // set User enabled and unlock
         userService.enableUser(tokenFromTable.getUser().getEmail());
+        userService.unlockUser(tokenFromTable.getUser().getEmail());
 
         return "confirmed";
     }

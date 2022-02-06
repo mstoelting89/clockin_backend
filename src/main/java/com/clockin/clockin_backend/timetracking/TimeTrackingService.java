@@ -4,9 +4,12 @@ import com.clockin.clockin_backend.security.jwt.authentication.JwtAuthentication
 import com.clockin.clockin_backend.user.User;
 import com.clockin.clockin_backend.user.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -27,10 +30,18 @@ public class TimeTrackingService {
     }
 
 
-    public int saveTimeTrackingEnd(String token) {
+    public int saveTimeTrackingEnd(String token, Long timeTrackingId) {
         String email = jwtAuthenticationService.getEmailFromToken(token);
         User user = userService.loadUserByMail(email);
 
-        return timeTrackingRepository.updateTimeTrackingEnd(LocalDateTime.now(), user);
+        return timeTrackingRepository.updateTimeTrackingEnd(LocalDateTime.now(), user, timeTrackingId);
+    }
+
+
+    public List<TimeTracking> getTimeTrackingData(String token) {
+        String email = jwtAuthenticationService.getEmailFromToken(token);
+        User user = userService.loadUserByMail(email);
+
+        return timeTrackingRepository.getTimeTrackingByUser(user);
     }
 }

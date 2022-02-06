@@ -8,18 +8,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface TimeTrackingRepository extends JpaRepository<TimeTracking, Long> {
 
-    Optional<TimeTracking> getTimeTrackingByUser(User user);
+    List<TimeTracking> getTimeTrackingByUser(User user);
 
 
     @Transactional
     @Modifying
-    @Query("UPDATE TimeTracking t SET t.end = ?1 WHERE t.user = ?2")
-    int updateTimeTrackingEnd(LocalDateTime endTime, User user);
+    @Query("UPDATE TimeTracking t SET t.end = ?1 WHERE t.user = ?2 AND t.id = ?3")
+    int updateTimeTrackingEnd(LocalDateTime endTime, User user, Long timeTrackingId);
 
     /*
     @Transactional
