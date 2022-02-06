@@ -25,10 +25,10 @@ public class TimeTracking {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private Long start;
+    private Long end;
 
-    public TimeTracking(User user, LocalDateTime start, LocalDateTime end) {
+    public TimeTracking(User user, Long start, Long end) {
         this.user = user;
         this.start = start;
         this.end = end;

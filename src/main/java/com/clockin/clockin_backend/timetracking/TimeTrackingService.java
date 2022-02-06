@@ -26,7 +26,7 @@ public class TimeTrackingService {
         String email = jwtAuthenticationService.getEmailFromToken(token);
         User user = userService.loadUserByMail(email);
 
-        return timeTrackingRepository.save(new TimeTracking(user, LocalDateTime.now(), null));
+        return timeTrackingRepository.save(new TimeTracking(user, System.currentTimeMillis(), null));
     }
 
 
@@ -34,7 +34,7 @@ public class TimeTrackingService {
         String email = jwtAuthenticationService.getEmailFromToken(token);
         User user = userService.loadUserByMail(email);
 
-        return timeTrackingRepository.updateTimeTrackingEnd(LocalDateTime.now(), user, timeTrackingId);
+        return timeTrackingRepository.updateTimeTrackingEnd(System.currentTimeMillis(), user, timeTrackingId);
     }
 
 

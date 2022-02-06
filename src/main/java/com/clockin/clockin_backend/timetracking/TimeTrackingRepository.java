@@ -20,7 +20,7 @@ public interface TimeTrackingRepository extends JpaRepository<TimeTracking, Long
     @Transactional
     @Modifying
     @Query("UPDATE TimeTracking t SET t.end = ?1 WHERE t.user = ?2 AND t.id = ?3")
-    int updateTimeTrackingEnd(LocalDateTime endTime, User user, Long timeTrackingId);
+    int updateTimeTrackingEnd(Long endTime, User user, Long timeTrackingId);
 
     /*
     @Transactional

@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS `token` (
 
 CREATE TABLE IF NOT EXISTS `time_tracking` (
                                  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                                 `end` datetime DEFAULT NULL,
-                                 `start` datetime DEFAULT NULL,
+                                 `end` bigint(20) DEFAULT NULL,
+                                 `start` bigint(20) DEFAULT NULL,
                                  `user_id` bigint(20) NOT NULL,
                                  PRIMARY KEY (`id`),
                                  KEY `FKkgt6ycxrjdvnod9hjcyaom9a7` (`user_id`),
