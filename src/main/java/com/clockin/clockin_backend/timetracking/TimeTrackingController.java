@@ -22,7 +22,7 @@ public class TimeTrackingController {
     private JwtAuthenticationService jwtAuthenticationService;
 
     @GetMapping(path = "/api/v1/timetrack/start", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity enterTimeTrackingStart(HttpServletRequest request) {
+    public ResponseEntity<?> enterTimeTrackingStart(HttpServletRequest request) {
 
         final String token = jwtAuthenticationService.extractTokenFromRequest(request);
 
@@ -32,36 +32,36 @@ public class TimeTrackingController {
             Map<String, Object> responseObject = new HashMap<String, Object>();
             responseObject.put("id", saveTimeTrackingEntry.getId());
 
-            return new ResponseEntity(responseObject, HttpStatus.OK);
+            return new ResponseEntity<>(responseObject, HttpStatus.OK);
         } else {
-            return new ResponseEntity("Zugriff nicht erlaubt", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Zugriff nicht erlaubt", HttpStatus.UNAUTHORIZED);
         }
 
     }
 
 
     @PostMapping(path = "/api/v1/timetrack/end")
-    public ResponseEntity enterTimeTrackingEnd(HttpServletRequest request, @RequestBody TimeTrackingDto timeTrackingDto) {
+    public ResponseEntity<?> enterTimeTrackingEnd(HttpServletRequest request, @RequestBody TimeTrackingDto timeTrackingDto) {
 
         final String token = jwtAuthenticationService.extractTokenFromRequest(request);
         final Long timeTrackingId = timeTrackingDto.getId();
 
         if (token != null) {
-            return new ResponseEntity(timeTrackingService.saveTimeTrackingEnd(token, timeTrackingId), HttpStatus.OK);
+            return new ResponseEntity<>(timeTrackingService.saveTimeTrackingEnd(token, timeTrackingId), HttpStatus.OK);
         } else {
-        return new ResponseEntity("Zugriff nicht erlaubt", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Zugriff nicht erlaubt", HttpStatus.UNAUTHORIZED);
         }
     }
 
     @GetMapping(path = "/api/v1/timetrack/get")
-    public ResponseEntity getTimeTrackingEntries(HttpServletRequest request) {
+    public ResponseEntity<?> getTimeTrackingEntries(HttpServletRequest request) {
 
         final String token = jwtAuthenticationService.extractTokenFromRequest(request);
 
         if (token != null) {
-            return new ResponseEntity(timeTrackingService.getTimeTrackingData(token), HttpStatus.OK);
+            return new ResponseEntity<>(timeTrackingService.getTimeTrackingData(token), HttpStatus.OK);
         } else {
-            return new ResponseEntity("Zugriff nicht erlaubt", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Zugriff nicht erlaubt", HttpStatus.UNAUTHORIZED);
         }
     }
 

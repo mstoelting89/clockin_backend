@@ -1,11 +1,20 @@
 package com.clockin.clockin_backend.security.authentication;
 
+import com.clockin.clockin_backend.security.jwt.authentication.JwtAuthenticationService;
+import com.clockin.clockin_backend.security.jwt.token.JwtTokenDto;
+import com.clockin.clockin_backend.user.User;
+import com.clockin.clockin_backend.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -14,10 +23,20 @@ import javax.persistence.EntityNotFoundException;
 public class AuthenticationController {
 
     private AuthenticationService authenticationService;
+    private JwtAuthenticationService jwtAuthenticationService;
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity createCustomer(@RequestBody AuthenticationDto authenticationDto) {
-        return new ResponseEntity(authenticationService.generateJwtToken(authenticationDto.getEmail(), authenticationDto.getPassword()), HttpStatus.OK);
+
+        JwtTokenDto token = authenticationService.generateJwtToken(authenticationDto.getEmail(), authenticationDto.getPassword());
+        User user = userService.loadUserByMail(authenticationDto.getEmail());
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(
+                token.getToken(),
+                user.getAuthorities()
+        );
+
+        return new ResponseEntity(authenticationResponse, HttpStatus.OK);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
