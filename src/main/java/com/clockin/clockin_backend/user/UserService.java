@@ -77,8 +77,6 @@ public class UserService implements UserDetailsService {
 
         String token = jwtTokenService.generateToken(email);
 
-        //TODO: find out how to implement email in token
-        // evtl. mit dem JwtTokenService?
         String link = "http://localhost:8081/login/forgotpassword?token=" + token;
 
         emailSender.send(email, buildEmail(user.getFirstName(), link));
@@ -94,11 +92,6 @@ public class UserService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
         return "Passwort wurde zurückgesetzt";
-    }
-
-    public String confirmForgotPasswordToken(String token) {
-        //TODO: implement confirm token method
-        return "done";
     }
 
     public int enableUser(String email) {
