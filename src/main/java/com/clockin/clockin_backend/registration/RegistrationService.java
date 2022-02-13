@@ -38,7 +38,7 @@ public class RegistrationService {
                         registrationDto.getLastName(),
                         registrationDto.getEmail(),
                         registrationDto.getPassword(),
-                        userRoleRepository.findUserRoleByRole("USER")
+                        userRoleRepository.findUserRoleByRole("ROLE_USER")
                 )
         );
 

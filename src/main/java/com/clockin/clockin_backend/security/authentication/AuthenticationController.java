@@ -27,7 +27,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity createCustomer(@RequestBody AuthenticationDto authenticationDto) {
+    public ResponseEntity<?> createCustomer(@RequestBody AuthenticationDto authenticationDto) {
 
         JwtTokenDto token = authenticationService.generateJwtToken(authenticationDto.getEmail(), authenticationDto.getPassword());
         User user = userService.loadUserByMail(authenticationDto.getEmail());
@@ -36,11 +36,26 @@ public class AuthenticationController {
                 user.getAuthorities()
         );
 
-        return new ResponseEntity(authenticationResponse, HttpStatus.OK);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/forgotpassword")
+    public ResponseEntity<?> forgotPassword (@RequestParam("email") String email) {
+        return new ResponseEntity<>(userService.handleForgotPassword(email), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/resetpassword")
+    public ResponseEntity<?> resetPassword (@RequestBody ResetPasswordDto resetPasswordDto) {
+        return new ResponseEntity<>(userService.resetPassword(resetPasswordDto.getToken(), resetPasswordDto.getPassword()), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/confirm")
+    public ResponseEntity<?> confirm (@RequestParam("token") String token) {
+        return new ResponseEntity<>(userService.confirmForgotPasswordToken(token), HttpStatus.OK);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handlerEntityNotFoundException(EntityNotFoundException ex) {
-        return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> handlerEntityNotFoundException(EntityNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
